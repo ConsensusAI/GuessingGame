@@ -41,8 +41,8 @@ public class Controller {
     }
 
     @GetMapping("/game/{gameId}")
-    public Game getGameById() {
-        return null;
+    public Game getGameById(@PathVariable int gameId) {
+        return gameDao.getGameById(gameId);
     }
 
     @GetMapping("/rounds/{gameId}")
