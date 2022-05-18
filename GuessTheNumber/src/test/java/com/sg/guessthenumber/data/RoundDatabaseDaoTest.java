@@ -13,8 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
@@ -83,6 +82,28 @@ public class RoundDatabaseDaoTest extends TestCase {
 
     @Test
     public void testUpdateRound() {
+        Game game = new Game();
+        game.setAnswer(1234);
+        game = gameDao.createGame(game);
+
+        Round round = new Round();
+        round.setGameId(game.getId());
+        round.setGuess(1435);
+        round.setResult("e:p:e:0");
+        round = roundDao.addRound(round);
+
+        Round fromDao = roundDao.getRoundById(round.getId());
+
+        round.setGuess(1937);
+        round.setResult("e:0:e:0");
+
+        roundDao.updateRound(round);
+
+        assertNotEquals(round, fromDao);
+
+        fromDao = roundDao.getRoundById(round.getId());
+
+        assertEquals(round, fromDao);
     }
 
     @Test
