@@ -4,6 +4,7 @@ import com.sg.guessthenumber.data.GameDao;
 import com.sg.guessthenumber.data.RoundDao;
 import com.sg.guessthenumber.models.Game;
 import com.sg.guessthenumber.models.Round;
+import com.sg.guessthenumber.service.GameRunnerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +18,12 @@ public class Controller {
 
     private final GameDao gameDao;
     private final RoundDao roundDao;
+    private final GameRunnerService gameRunner;
 
-    public Controller(GameDao gameDao, RoundDao roundDao) {
+    public Controller(GameDao gameDao, RoundDao roundDao, GameRunnerService gameRunner) {
         this.gameDao = gameDao;
         this.roundDao = roundDao;
+        this.gameRunner = gameRunner;
     }
 
     @PostMapping("/begin")
@@ -34,7 +37,8 @@ public class Controller {
 
     @PostMapping("/guess")
     public Round guess(@RequestBody Round round) {
-            round.setResult("0:0:0:0"); // TODO: Add service layer function to handle guess
+        round.setResult("0:0:0:0"); // TODO: Add service layer function to handle guess
+        gameRunner.checkGuess(round);
         return roundDao.addRound(round);
     }
 
