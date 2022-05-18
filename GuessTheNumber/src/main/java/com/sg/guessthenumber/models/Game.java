@@ -6,7 +6,6 @@ public class Game {
     private int id;
     private int answer;
     private boolean isFinished;
-    private List<Round> rounds;
 
     public int getAnswer() {
         return answer;
@@ -22,14 +21,6 @@ public class Game {
 
     public void setFinished(boolean finished) {
         isFinished = finished;
-    }
-
-    public List<Round> getRounds() {
-        return rounds;
-    }
-
-    public void setRounds(List<Round> rounds) {
-        this.rounds = rounds;
     }
 
     public int getId() {

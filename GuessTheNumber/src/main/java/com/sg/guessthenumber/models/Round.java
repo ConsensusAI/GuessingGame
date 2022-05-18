@@ -4,17 +4,17 @@ import java.sql.Timestamp;
 
 public class Round {
     private int id;
-    private String guess;
+    private int guess;
     private Timestamp time;
     private String result;
     private int gameId;
 
 
-    public String getGuess() {
+    public int getGuess() {
         return guess;
     }
 
-    public void setGuess(String guess) {
+    public void setGuess(int guess) {
         this.guess = guess;
     }
 
