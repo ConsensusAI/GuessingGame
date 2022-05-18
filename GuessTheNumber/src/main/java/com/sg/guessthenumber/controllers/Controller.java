@@ -33,7 +33,8 @@ public class Controller {
     }
 
     @PostMapping("/guess")
-    public Round guess() {
+    public Round guess(@RequestBody int gameId, int guess) {
+
         return null;
     }
 
