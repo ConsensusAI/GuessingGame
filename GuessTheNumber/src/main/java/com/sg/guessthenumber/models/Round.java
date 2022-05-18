@@ -1,6 +1,7 @@
 package com.sg.guessthenumber.models;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Round {
     private int id;
@@ -48,5 +49,18 @@ public class Round {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
+        if (getClass() != obj.getClass()) { return false; }
+        final Round other = (Round) obj;
+        if (!Objects.equals(this.getId(), other.getId()))  { return false; }
+        if (!Objects.equals(this.getGameId(), other.getGameId()))  { return false; }
+        if (!Objects.equals(this.getGuess(), other.getGuess()))  { return false; }
+        if (!Objects.equals(this.getResult(), other.getResult()))  { return false; }
+        if (!Objects.equals(this.getTime(), other.getTime()))  { return false; }
+        return true;
     }
 }

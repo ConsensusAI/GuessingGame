@@ -1,7 +1,5 @@
 package com.sg.guessthenumber.controllers;
 
-import com.sg.guessthenumber.data.GameDao;
-import com.sg.guessthenumber.data.RoundDao;
 import com.sg.guessthenumber.models.Game;
 import com.sg.guessthenumber.models.Round;
 import com.sg.guessthenumber.service.GameRunnerService;
@@ -10,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +26,7 @@ public class Controller {
     }
 
     @PostMapping("/guess")
+    @ResponseStatus(HttpStatus.CREATED)
     public Round guess(@RequestBody Round round) {
         return gameRunner.checkGuess(round);
     }
