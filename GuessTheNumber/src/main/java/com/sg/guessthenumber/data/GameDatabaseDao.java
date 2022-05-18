@@ -32,8 +32,7 @@ public class GameDatabaseDao implements GameDao {
         return jdbcTemplate.queryForObject(GET_GAME_BY_ID, new GameMapper(), id);
     }
 
-    @Override
-    public Game addGame(Game game) {
+    public Game createGame(Game game) {
         final String ADD_GAME = "INSERT INTO game(answer) " +
                 "VALUES (?);";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();

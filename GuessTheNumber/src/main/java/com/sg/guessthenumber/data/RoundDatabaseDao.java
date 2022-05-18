@@ -79,7 +79,9 @@ public class RoundDatabaseDao implements RoundDao {
 
     @Override
     public List<Round> getRoundsForGame(int gameId) {
-        final String GET_ROUNDS_FOR_GAME = "SELECT id, guess, time, result, gameId FROM round WHERE gameId = ?;";
+        final String GET_ROUNDS_FOR_GAME = "SELECT id, guess, time, result, gameId " +
+                "FROM round WHERE gameId = ? " +
+                "ORDER BY time;";
         return jdbcTemplate.query(GET_ROUNDS_FOR_GAME, new RoundMapper(), gameId);
     }
 

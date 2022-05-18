@@ -26,8 +26,10 @@ public class Controller {
     @PostMapping("/begin")
     @ResponseStatus(HttpStatus.CREATED)
     public int begin() {
-
-        return 0;
+        Game game = new Game();
+        game.setAnswer(answerGenerator(4));
+        game = gameDao.createGame(game);
+        return game.getId();
     }
 
     @PostMapping("/guess")
@@ -42,7 +44,7 @@ public class Controller {
 
     @GetMapping("/game/{gameId}")
     public Game getGameById(@PathVariable int gameId) {
-        return gameDao.getGameById(gameId);
+        return gameDao.getGameById(gameId); // TODO: Don't show answer of unfinished game
     }
 
     @GetMapping("/rounds/{gameId}")
