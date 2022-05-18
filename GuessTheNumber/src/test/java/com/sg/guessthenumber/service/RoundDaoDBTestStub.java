@@ -5,7 +5,7 @@ import com.sg.guessthenumber.models.Round;
 
 import java.util.List;
 
-public class RoundDaoDBTest implements RoundDao {
+public class RoundDaoDBTestStub implements RoundDao {
     @Override
     public List<Round> getAllRounds() {
         return null;

@@ -2,7 +2,7 @@ package com.sg.guessthenumber.service;
 
 import junit.framework.TestCase;
 
-public class GameRunnerServiceTestStub extends TestCase {
+public class GameRunnerServiceTest extends TestCase {
 
     public void testCheckGuess() {
     }
