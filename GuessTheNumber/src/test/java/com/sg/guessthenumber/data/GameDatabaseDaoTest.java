@@ -46,8 +46,8 @@ public class GameDatabaseDaoTest {
         game = gameDao.createGame(game);
 
         Game game2 = new Game();
-        game.setAnswer(6789);
-        game = gameDao.createGame(game);
+        game2.setAnswer(6789);
+        game2 = gameDao.createGame(game2);
 
         List<Game> games = gameDao.getAllGames();
 
