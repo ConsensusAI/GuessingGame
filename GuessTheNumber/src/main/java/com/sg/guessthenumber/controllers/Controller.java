@@ -16,12 +16,10 @@ import java.util.stream.IntStream;
 @RequestMapping("/api")
 public class Controller {
 
-    private final GameDao gameDao;
     private final RoundDao roundDao;
     private final GameRunnerService gameRunner;
 
-    public Controller(GameDao gameDao, RoundDao roundDao, GameRunnerService gameRunner) {
-        this.gameDao = gameDao;
+    public Controller(RoundDao roundDao, GameRunnerService gameRunner) {
         this.roundDao = roundDao;
         this.gameRunner = gameRunner;
     }
@@ -29,52 +27,26 @@ public class Controller {
     @PostMapping("/begin")
     @ResponseStatus(HttpStatus.CREATED)
     public int begin() {
-        Game game = new Game();
-        game.setAnswer(answerGenerator(4));
-        game = gameDao.createGame(game);
-        return game.getId();
+        return gameRunner.createGame();
     }
 
     @PostMapping("/guess")
     public Round guess(@RequestBody Round round) {
-        round.setResult("0:0:0:0"); // TODO: Add service layer function to handle guess
-        gameRunner.checkGuess(round);
-        return roundDao.addRound(round);
+        return gameRunner.checkGuess(round);
     }
 
     @GetMapping("/game")
     public List<Game> getAllGames() {
-        return gameDao.getAllGames();
+        return gameRunner.getAllGames();
     }
 
     @GetMapping("/game/{gameId}")
     public Game getGameById(@PathVariable int gameId) {
-        return gameDao.getGameById(gameId); // TODO: Don't show answer of unfinished game
+        return gameRunner.getGameById(gameId); // TODO: Don't show answer of unfinished game
     }
 
     @GetMapping("/rounds/{gameId}")
     public List<Round> getRoundsForGame(@PathVariable int gameId) {
-        return roundDao.getRoundsForGame(gameId);
-    }
-
-    private int answerGenerator(int numOfDigits) {
-        int[] nums = new int[numOfDigits];
-        Random random = new Random();
-        for (int i = 0; i < nums.length; i++) {
-            int curr = random.nextInt(10);
-            boolean exists = IntStream.of(nums).anyMatch(x -> x == curr);
-            if (exists) {
-                i--;
-            } else {
-                nums[i] = curr;
-            }
-        }
-        int factor = 1;
-        int result = 0;
-        for (int num : nums) {
-            result += (num * factor);
-            factor *= 10;
-        }
-        return result;
+        return gameRunner.getRoundsForGame(gameId);
     }
 }

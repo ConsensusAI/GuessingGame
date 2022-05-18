@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -34,8 +35,11 @@ public class RoundDatabaseDao implements RoundDao {
 
     @Override
     public Round addRound(Round round) {
-        final String ADD_ROUND = "INSERT INTO round(guess, result, gameId) " +
-                "VALUES (?,?,?);";
+        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
+        round.setTime(time);
+
+        final String ADD_ROUND = "INSERT INTO round(guess, time, result, gameId) " +
+                "VALUES (?,?,?,?);";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update((Connection conn) -> {
@@ -44,8 +48,9 @@ public class RoundDatabaseDao implements RoundDao {
                     Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, round.getGuess());
-            statement.setString(2, round.getResult());
-            statement.setInt(3, round.getGameId());
+            statement.setTimestamp(2, round.getTime());
+            statement.setString(3, round.getResult());
+            statement.setInt(4, round.getGameId());
             return statement;
         }, keyHolder);
 

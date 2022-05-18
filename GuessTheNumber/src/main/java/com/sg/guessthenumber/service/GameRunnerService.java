@@ -2,12 +2,16 @@ package com.sg.guessthenumber.service;
 
 import com.sg.guessthenumber.data.GameDao;
 import com.sg.guessthenumber.data.RoundDao;
+import com.sg.guessthenumber.models.Game;
 import com.sg.guessthenumber.models.Round;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Repository
 public class GameRunnerService {
@@ -58,15 +62,47 @@ public class GameRunnerService {
         result = result.substring(0, result.length() - 1);
         result = new StringBuilder(result).reverse().toString();
         round.setResult(result);
+        round = roundDao.addRound(round);
         return round;
     }
-}
 
-/*
-Check if exists in map
-if so
-    Check if equal
-        if equal then e for that digit
-        else p for that digit
-else 0 for that digit
- */
+    public int createGame() {
+        Game game = new Game();
+        game.setAnswer(answerGenerator(4));
+        game = gameDao.createGame(game);
+        return game.getId();
+    }
+
+    public List<Game> getAllGames() {
+        return gameDao.getAllGames();
+    }
+
+    public List<Round> getRoundsForGame(int gameId) {
+        return roundDao.getRoundsForGame(gameId);
+    }
+
+    public Game getGameById(int gameId) {
+        return gameDao.getGameById(gameId);
+    }
+
+    private int answerGenerator(int numOfDigits) {
+        int[] nums = new int[numOfDigits];
+        Random random = new Random();
+        for (int i = 0; i < nums.length; i++) {
+            int curr = random.nextInt(10);
+            boolean exists = IntStream.of(nums).anyMatch(x -> x == curr);
+            if (exists) {
+                i--;
+            } else {
+                nums[i] = curr;
+            }
+        }
+        int factor = 1;
+        int result = 0;
+        for (int num : nums) {
+            result += (num * factor);
+            factor *= 10;
+        }
+        return result;
+    }
+}
