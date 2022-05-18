@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
@@ -108,6 +109,20 @@ public class RoundDatabaseDaoTest extends TestCase {
 
     @Test
     public void testDeleteRoundById() {
+        Game game = new Game();
+        game.setAnswer(1234);
+        game = gameDao.createGame(game);
+
+        Round round = new Round();
+        round.setGameId(game.getId());
+        round.setGuess(1435);
+        round.setResult("e:p:e:0");
+        round = roundDao.addRound(round);
+
+        roundDao.deleteRoundById(round.getId());
+
+        Round fromDao = roundDao.getRoundById(round.getId());
+        assertNull(fromDao);
     }
 
     @Test
