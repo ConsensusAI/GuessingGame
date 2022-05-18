@@ -5,7 +5,7 @@ import com.sg.guessthenumber.models.Game;
 
 import java.util.List;
 
-public class GameDaoDBTest implements GameDao {
+public class GameDaoDBTestStub implements GameDao {
     @Override
     public List<Game> getAllGames() {
         return null;
