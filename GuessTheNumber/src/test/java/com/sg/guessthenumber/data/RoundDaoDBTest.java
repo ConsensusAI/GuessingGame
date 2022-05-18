@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
-public class RoundDatabaseDaoTest extends TestCase {
+public class RoundDaoDBTest extends TestCase {
 
     @Autowired
     GameDao gameDao;

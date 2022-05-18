@@ -13,12 +13,12 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
-public class GameDatabaseDao implements GameDao {
+public class GameDaoDB implements GameDao {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GameDatabaseDao(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
+    public GameDaoDB(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
 
     @Override
     public List<Game> getAllGames() {

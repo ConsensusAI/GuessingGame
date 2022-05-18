@@ -1,7 +1,6 @@
 package com.sg.guessthenumber.data;
 
 import com.sg.guessthenumber.models.Round;
-import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,16 +9,15 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class RoundDatabaseDao implements RoundDao {
+public class RoundDaoDB implements RoundDao {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public RoundDatabaseDao(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
+    public RoundDaoDB(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
 
     @Override
     public List<Round> getAllRounds() {

@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
-public class GameDatabaseDaoTest {
+public class GameDaoDBTest {
 
     @Autowired
     GameDao gameDao;
