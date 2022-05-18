@@ -1,6 +1,7 @@
 package com.sg.guessthenumber.controllers;
 
 import com.sg.guessthenumber.data.GameDao;
+import com.sg.guessthenumber.data.RoundDao;
 import com.sg.guessthenumber.models.Game;
 import com.sg.guessthenumber.models.Round;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,18 @@ import java.util.stream.IntStream;
 @RequestMapping("/api")
 public class Controller {
 
-    GameDao dao;
+    private final GameDao gameDao;
+    private final RoundDao roundDao;
+
+    public Controller(GameDao gameDao, RoundDao roundDao) {
+        this.gameDao = gameDao;
+        this.roundDao = roundDao;
+    }
 
     @PostMapping("/begin")
     @ResponseStatus(HttpStatus.CREATED)
     public int begin() {
+
         return 0;
     }
 
@@ -29,7 +37,7 @@ public class Controller {
 
     @GetMapping("/game")
     public List<Game> getAllGames() {
-        return null;
+        return gameDao.getAllGames();
     }
 
     @GetMapping("/game/{gameId}")
@@ -38,8 +46,8 @@ public class Controller {
     }
 
     @GetMapping("/rounds/{gameId}")
-    public List<Round> getRoundsForGame() {
-        return null;
+    public List<Round> getRoundsForGame(@PathVariable int gameId) {
+        return roundDao.getRoundsForGame(gameId);
     }
 
     private int answerGenerator(int numOfDigits) {
