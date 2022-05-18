@@ -2,6 +2,7 @@ package com.sg.guessthenumber.data;
 
 import com.sg.guessthenumber.models.Round;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -28,9 +29,13 @@ public class RoundDatabaseDao implements RoundDao {
 
     @Override
     public Round getRoundById(int id) {
-        final String GET_ROUND_BY_ID = "SELECT id, guess, time, result, gameId " +
-                "FROM round WHERE id = ?";
-        return jdbcTemplate.queryForObject(GET_ROUND_BY_ID, new RoundMapper(), id);
+        try {
+            final String GET_ROUND_BY_ID = "SELECT id, guess, time, result, gameId " +
+                    "FROM round WHERE id = ?";
+            return jdbcTemplate.queryForObject(GET_ROUND_BY_ID, new RoundMapper(), id);
+        } catch(DataAccessException ex) {
+            return null;
+        }
     }
 
     @Override

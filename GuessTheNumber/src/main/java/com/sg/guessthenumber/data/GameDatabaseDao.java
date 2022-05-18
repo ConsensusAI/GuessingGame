@@ -2,6 +2,7 @@ package com.sg.guessthenumber.data;
 
 import com.sg.guessthenumber.models.Game;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -27,9 +28,13 @@ public class GameDatabaseDao implements GameDao {
 
     @Override
     public Game getGameById(int id) {
-        final String GET_GAME_BY_ID = "SELECT id, answer, finished " +
-                "FROM game WHERE id = ?;";
-        return jdbcTemplate.queryForObject(GET_GAME_BY_ID, new GameMapper(), id);
+        try {
+            final String GET_GAME_BY_ID = "SELECT id, answer, finished " +
+                    "FROM game WHERE id = ?;";
+            return jdbcTemplate.queryForObject(GET_GAME_BY_ID, new GameMapper(), id);
+        }  catch(DataAccessException ex) {
+            return null;
+        }
     }
 
     public Game createGame(Game game) {
