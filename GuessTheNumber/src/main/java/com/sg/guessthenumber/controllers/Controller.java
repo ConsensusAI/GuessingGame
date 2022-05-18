@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/api")
@@ -39,12 +41,25 @@ public class Controller {
     public List<Round> getRoundsForGame() {
         return null;
     }
-}
 
-/*
-begin
-guess
-game
-game/{gameId}
-rounds/{gameId}
- */
+    private int answerGenerator(int numOfDigits) {
+        int[] nums = new int[numOfDigits];
+        Random random = new Random();
+        for (int i = 0; i < nums.length; i++) {
+            int curr = random.nextInt(10);
+            boolean exists = IntStream.of(nums).anyMatch(x -> x == curr);
+            if (exists) {
+                i--;
+            } else {
+                nums[i] = curr;
+            }
+        }
+        int factor = 1;
+        int result = 0;
+        for (int num : nums) {
+            result += (num * factor);
+            factor *= 10;
+        }
+        return result;
+    }
+}
