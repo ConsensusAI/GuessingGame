@@ -1,6 +1,5 @@
 package com.sg.guessthenumber.data;
 
-import com.sg.guessthenumber.models.Game;
 import com.sg.guessthenumber.models.Round;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,8 +34,8 @@ public class RoundDatabaseDao implements RoundDao {
 
     @Override
     public Round addRound(Round round) {
-        final String ADD_ROUND = "INSERT INTO round(guess, time, result, gameId) " +
-                "VALUES (?,?,?,?);";
+        final String ADD_ROUND = "INSERT INTO round(guess, result, gameId) " +
+                "VALUES (?,?,?);";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update((Connection conn) -> {
@@ -45,11 +44,13 @@ public class RoundDatabaseDao implements RoundDao {
                     Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, round.getGuess());
-            statement.setTimestamp(2, round.getTime());
-            statement.setString(3, round.getResult());
-            statement.setInt(4, round.getGameId());
+            statement.setString(2, round.getResult());
+            statement.setInt(3, round.getGameId());
             return statement;
         }, keyHolder);
+
+        int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        round.setId(newId);
 
         return round;
     }
@@ -94,6 +95,7 @@ public class RoundDatabaseDao implements RoundDao {
             round.setGameId(rs.getInt("gameId"));
             round.setTime(rs.getTimestamp("time"));
             round.setResult(rs.getString("result"));
+            round.setId(rs.getInt("id"));
             return round;
         }
     }

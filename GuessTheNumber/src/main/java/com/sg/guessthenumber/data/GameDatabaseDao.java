@@ -46,6 +46,9 @@ public class GameDatabaseDao implements GameDao {
             return statement;
         }, keyHolder);
 
+        int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        game.setId(newId);
+
         return game;
     }
 

@@ -33,9 +33,9 @@ public class Controller {
     }
 
     @PostMapping("/guess")
-    public Round guess(@RequestBody int gameId, int guess) {
-
-        return null;
+    public Round guess(@RequestBody Round round) {
+            round.setResult("0:0:0:0"); // TODO: Add service layer function to handle guess
+        return roundDao.addRound(round);
     }
 
     @GetMapping("/game")
