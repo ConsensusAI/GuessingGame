@@ -63,4 +63,15 @@ public class Round {
         if (!Objects.equals(this.getTime(), other.getTime()))  { return false; }
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.getId());
+        hash = 89 * hash + Objects.hashCode(this.getGameId());
+        hash = 89 * hash + Objects.hashCode(this.getGuess());
+        hash = 89 * hash + Objects.hashCode(this.getResult());
+        hash = 89 * hash + Objects.hashCode(this.getTime());
+        return hash;
+    }
 }

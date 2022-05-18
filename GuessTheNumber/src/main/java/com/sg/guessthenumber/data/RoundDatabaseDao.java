@@ -1,6 +1,7 @@
 package com.sg.guessthenumber.data;
 
 import com.sg.guessthenumber.models.Round;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,11 +41,9 @@ public class RoundDatabaseDao implements RoundDao {
 
     @Override
     public Round addRound(Round round) {
-        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
-        round.setTime(time);
 
-        final String ADD_ROUND = "INSERT INTO round(guess, time, result, gameId) " +
-                "VALUES (?,?,?,?);";
+        final String ADD_ROUND = "INSERT INTO round(guess, result, gameId) " +
+                "VALUES (?,?,?);";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update((Connection conn) -> {
@@ -53,14 +52,17 @@ public class RoundDatabaseDao implements RoundDao {
                     Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, round.getGuess());
-            statement.setTimestamp(2, round.getTime());
-            statement.setString(3, round.getResult());
-            statement.setInt(4, round.getGameId());
+            statement.setString(2, round.getResult());
+            statement.setInt(3, round.getGameId());
             return statement;
         }, keyHolder);
 
         int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         round.setId(newId);
+
+        Timestamp newTime = jdbcTemplate.queryForObject("SELECT time FROM round " +
+                "WHERE id = ?", Timestamp.class, round.getId());
+        round.setTime(newTime);
 
         return round;
     }
