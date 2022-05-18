@@ -12,8 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
@@ -69,9 +68,40 @@ public class GameDatabaseDaoTest {
 
     @Test
     public void testUpdateGame() {
+        Game game = new Game();
+        game.setAnswer(1234);
+        game = gameDao.createGame(game);
+
+        Game fromDao = gameDao.getGameById(game.getId());
+
+        assertEquals(game, fromDao);
+
+        game.setAnswer(9142);
+
+        gameDao.updateGame(game);
+
+        assertNotEquals(game, fromDao);
+
+        fromDao = gameDao.getGameById(game.getId());
+
+        assertEquals(game, fromDao);
     }
 
     @Test
     public void testDeleteGameById() {
+        Game game = new Game();
+        game.setAnswer(1234);
+        game = gameDao.createGame(game);
+
+        Round round = new Round();
+        round.setGameId(game.getId());
+        round.setGuess(1435);
+        round.setResult("e:p:e:0");
+        round = roundDao.addRound(round);
+
+        gameDao.deleteGameById(game.getId());
+
+        Game fromDao = gameDao.getGameById(game.getId());
+        assertNull(fromDao);
     }
 }
