@@ -6,6 +6,7 @@ import com.sg.guessthenumber.models.Game;
 import com.sg.guessthenumber.models.Round;
 import com.sg.guessthenumber.service.GameRunnerService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,8 +40,12 @@ public class Controller {
     }
 
     @GetMapping("/game/{gameId}")
-    public Game getGameById(@PathVariable int gameId) {
-        return gameRunner.getGameById(gameId); // TODO: Don't show answer of unfinished game
+    public ResponseEntity<Game> getGameById(@PathVariable int gameId) {
+        Game game = gameRunner.getGameById(gameId);
+        if (game == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(game);
     }
 
     @GetMapping("/rounds/{gameId}")
