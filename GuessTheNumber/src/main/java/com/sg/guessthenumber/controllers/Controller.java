@@ -16,11 +16,9 @@ import java.util.stream.IntStream;
 @RequestMapping("/api")
 public class Controller {
 
-    private final RoundDao roundDao;
     private final GameRunnerService gameRunner;
 
-    public Controller(RoundDao roundDao, GameRunnerService gameRunner) {
-        this.roundDao = roundDao;
+    public Controller(GameRunnerService gameRunner) {
         this.gameRunner = gameRunner;
     }
 
