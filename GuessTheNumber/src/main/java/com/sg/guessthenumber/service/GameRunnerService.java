@@ -18,6 +18,7 @@ public class GameRunnerService {
 
     private final GameDao gameDao;
     private final RoundDao roundDao;
+    private final String PERFECT_MATCH = "e:e:e:e";
 
     public GameRunnerService(GameDao gameDao, RoundDao roundDao) {
         this.gameDao = gameDao;
@@ -63,7 +64,16 @@ public class GameRunnerService {
         result = new StringBuilder(result).reverse().toString();
         round.setResult(result);
         round = roundDao.addRound(round);
+        if (result.equals(PERFECT_MATCH)) {
+            updateGameStatus(round);
+        }
         return round;
+    }
+
+    private void updateGameStatus(Round round) {
+        Game game = gameDao.getGameById(round.getGameId());
+        game.setFinished(true);
+        gameDao.updateGame(game);
     }
 
     public int createGame() {
@@ -74,7 +84,13 @@ public class GameRunnerService {
     }
 
     public List<Game> getAllGames() {
-        return gameDao.getAllGames();
+        List<Game> games = gameDao.getAllGames();
+        for (Game game : games) {
+            if (!game.isFinished()) {
+                game.setAnswer(0);
+            }
+        }
+        return games;
     }
 
     public List<Round> getRoundsForGame(int gameId) {
@@ -82,7 +98,11 @@ public class GameRunnerService {
     }
 
     public Game getGameById(int gameId) {
-        return gameDao.getGameById(gameId);
+        Game game = gameDao.getGameById(gameId);
+        if (!game.isFinished()) {
+            game.setAnswer(0);
+        }
+        return game;
     }
 
     private int answerGenerator(int numOfDigits) {
