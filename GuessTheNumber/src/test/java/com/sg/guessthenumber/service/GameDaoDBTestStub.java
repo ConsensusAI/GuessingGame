@@ -7,33 +7,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameDaoDBTestStub implements GameDao {
-    public Game onlyGame;
+    public Game trueGame;
+    public Game falseGame;
 
     public GameDaoDBTestStub() {
-        onlyGame = new Game();
-        onlyGame.setId(1);
-        onlyGame.setAnswer(1234);
-        onlyGame.setFinished(false);
+        trueGame = new Game();
+        trueGame.setId(1);
+        trueGame.setAnswer(1234);
+        trueGame.setFinished(true);
+
+        falseGame = new Game();
+        falseGame.setId(2);
+        falseGame.setAnswer(6789);
+        falseGame.setFinished(false);
     }
 
     @Override
     public List<Game> getAllGames() {
         List<Game> games = new ArrayList<>();
-        games.add(onlyGame);
+        games.add(trueGame);
         return games;
     }
 
     @Override
     public Game getGameById(int id) {
-        if (id == onlyGame.getId()) {
-            return onlyGame;
+        if (id == trueGame.getId()) {
+            return trueGame;
+        }
+        if (id == falseGame.getId()) {
+            return falseGame;
         }
         return null;
     }
 
     @Override
     public Game createGame(Game game) {
-        return game;
+        return trueGame;
     }
 
     @Override
